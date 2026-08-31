@@ -1,0 +1,38 @@
+services:
+
+  frontend:
+    build: ./frontend
+    container_name: wanderlust-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: wanderlust-backend
+    ports:
+      - "5000:5000"
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/wanderlust
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+
+  mongodb:
+    image: mongo:7
+    container_name: wanderlust-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7
+    container_name: wanderlust-redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongo_data:
