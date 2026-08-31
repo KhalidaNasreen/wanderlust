@@ -5,32 +5,52 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out Wanderlust project'
+                checkout scm
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests'
+                sh '''
+                    cd backend
+                    npm test -- --runInBand
+                '''
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building Docker images'
-            }
-        }
-
-        stage('Push') {
-            steps {
-                echo 'Pushing Docker images'
+                sh '''
+                    docker compose build
+                '''
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying Wanderlust application'
+                sh '''
+                    docker compose down
+                    docker compose up -d
+                '''
             }
+        }
+
+        stage('Verify') {
+            steps {
+                sh '''
+                    docker compose ps
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Wanderlust CI/CD pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Wanderlust CI/CD pipeline failed.'
         }
     }
 }
