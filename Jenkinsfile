@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent any
 
@@ -13,6 +14,7 @@ pipeline {
             steps {
                 sh '''
                     cd backend
+                    npm ci
                     npm test -- --runInBand
                 '''
             }
@@ -39,7 +41,7 @@ pipeline {
             steps {
                 sh '''
                     docker compose ps
-                '''
+            '''
             }
         }
     }
@@ -54,3 +56,5 @@ pipeline {
         }
     }
 }
+```
+
