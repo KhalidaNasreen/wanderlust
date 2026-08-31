@@ -62,9 +62,6 @@ The application is deployed on an Ubuntu EC2 instance on AWS.
 
 Jenkins automatically pulls the latest code, builds the Docker images, and deploys the application using Docker Compose.
 
-## CI/CD Screenshot
-
-Add the Jenkins Pipeline Stage View screenshot here.
 
 ## Author
 
